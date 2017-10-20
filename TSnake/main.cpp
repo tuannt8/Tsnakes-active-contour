@@ -29,7 +29,7 @@ namespace
 {
     int GRIDX = 30;
     int GRIDY = 30;
-    int GRID_SCALE = 15;
+    int GRID_SCALE = 30;
     
     int win_size_x = 500;
     int win_size_y = 500;
@@ -85,6 +85,24 @@ namespace
         void clear()
         {
             vertices.clear();
+        }
+        
+        void evolute_curve()
+        {
+            static int iter = 0;
+            double dt = 0.7;
+            if(iter++ > 10)
+                dt = 0.1;
+            for (int i = 0; i < vertices.size(); i++)
+            {
+                auto pos = vertices[i];
+                auto n = normals[i];
+                auto inten = m_image.get_intensity_scale(pos[0],pos[1]);
+                
+                auto f = n*(inten - 0.25)*(-dt);
+                
+                vertices[i] = pos + f;
+            }
         }
         
         void transform(const Vec2f& trans, const Mat2x2f& mat)
@@ -529,8 +547,11 @@ namespace
     
     void key(unsigned char c,int x, int y)
     {
-        VERTEX_DB.transform(Vec2f(15,15),
-                            Mat2x2f(cos(.1),sin(.1),-sin(.1),cos(.1)));
+        give_snake_normals();
+        VERTEX_DB.evolute_curve();
+        
+//        VERTEX_DB.transform(Vec2f(15,15),
+//                            Mat2x2f(cos(.1),sin(.1),-sin(.1),cos(.1)));
         glutPostRedisplay();
     }
     
@@ -569,10 +590,13 @@ namespace
 int main(int argc, char **argv)
 {
     // Load image
-    m_image.load_image("./Data/triround.png");
+    m_image.load_image("./Data/snake.png");
     
-    win_size_x = GRIDX*GRID_SCALE;
-    win_size_y = GRIDY*GRID_SCALE;
+    win_size_x = m_image.width();
+    win_size_y = m_image.height();
+    
+    GRIDX = (int)(m_image.width()/GRID_SCALE);
+    GRIDY = (int)(m_image.height()/GRID_SCALE);
     
     m_image.image_scale[0] = (double)GRIDX/m_image.width();
     m_image.image_scale[1] = (double)GRIDY/m_image.height();
@@ -580,7 +604,7 @@ int main(int argc, char **argv)
     // Init OpenGL
     
     glutInit(&argc, argv);
-    glutInitWindowSize(win_size_x, win_size_x);
+    glutInitWindowSize(win_size_x, win_size_y);
     glutInitDisplayMode(GLUT_ALPHA|GLUT_DOUBLE);
     glutCreateWindow("T-Snakes");
     
@@ -600,14 +624,15 @@ int main(int argc, char **argv)
     glutMouseFunc(mouse2);
     
     int p0,p1;
-    SEGMENT_DB.push_back(Segment(p0=VERTEX_DB.add(Vec2f(10,11)),
-                                 p1=VERTEX_DB.add(Vec2f(11,10))));
+    int gap = 2.5;
+    SEGMENT_DB.push_back(Segment(p0=VERTEX_DB.add(Vec2f(gap,gap)),
+                                 p1=VERTEX_DB.add(Vec2f(GRIDX-gap,gap))));
     int p2;
     SEGMENT_DB.push_back(Segment(p1,
-                                 p2=VERTEX_DB.add(Vec2f(18,12))));
+                                 p2=VERTEX_DB.add(Vec2f(GRIDX-gap,GRIDY-gap))));
     int p3;
     SEGMENT_DB.push_back(Segment(p2,
-                                 p3=VERTEX_DB.add(Vec2f(12,18))));
+                                 p3=VERTEX_DB.add(Vec2f(gap,GRIDY - gap))));
     
     SEGMENT_DB.push_back(Segment(p3,p0));
     

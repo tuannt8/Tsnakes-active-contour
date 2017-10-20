@@ -13,8 +13,8 @@
 
 
 using namespace std;
-//#define NOISE 5
-//#define BLUR 3
+#define NOISE 5
+#define BLUR 3
 
 void image::load_image(std::string const file_path){
     try
@@ -34,6 +34,10 @@ void image::load_image(std::string const file_path){
     {
         cout << e.what();
     }
+}
+double image::get_intensity_scale(double x, double y)
+{
+    return get_intensity_f(x/image_scale[0], y/image_scale[1]);
 }
 void image::draw_image_scale()
 {

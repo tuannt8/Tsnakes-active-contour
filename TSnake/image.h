@@ -52,7 +52,7 @@ public:
     /*********/
     Vec2 image_scale;
     void draw_image_scale();
-    
+    double get_intensity_scale(double x, double y);
 private:
     // Row order storage idx = y * width + x
     Vec2_array gradient_;
