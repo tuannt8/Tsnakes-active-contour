@@ -21,6 +21,8 @@
 
 #include "image.h"
 
+#include "profile.h"
+
 using namespace CGLA;
 using namespace Util;
 using namespace std;
@@ -29,7 +31,7 @@ namespace
 {
     int GRIDX = 30;
     int GRIDY = 30;
-    int GRID_SCALE = 30;
+    int GRID_SCALE = 3;
     
     int win_size_x = 500;
     int win_size_y = 500;
@@ -91,8 +93,8 @@ namespace
         {
             static int iter = 0;
             double dt = 0.7;
-            if(iter++ > 10)
-                dt = 0.1;
+//            if(iter++ > 100)
+//                dt = 0.1;
             for (int i = 0; i < vertices.size(); i++)
             {
                 auto pos = vertices[i];
@@ -478,63 +480,66 @@ namespace
     
     void display()
     {
+        profile t("sanke 1");
         GridType grid(GRIDX, GRIDY);
         process_snake(grid);
         process_grid(grid);
+        t.done();
         
+        profile t1("draw");
         glClearColor(1,1,1,1);
         glClear(GL_COLOR_BUFFER_BIT);
         
         
-        m_image.draw_image_scale();
+//        m_image.draw_image_scale();
 
-        
-        glLineWidth(3);
+        glLineWidth(5);
         glColor3f(1,0,0);
         for(int i=0;i<SEGMENT_DB.size(); ++i)
             SEGMENT_DB[i].gl_draw();
-        glLineWidth(1);
 
-        glPointSize(4);
-        for(int i=0;i<GRIDX; ++i)
-            for(int j=0; j< GRIDY; ++j)
-            {
+//        glLineWidth(1);
+//
+//        glPointSize(4);
+//        for(int i=0;i<GRIDX; ++i)
+//            for(int j=0; j< GRIDY; ++j)
+//            {
+//
+//                glColor3f(0,1,0);
+//                glBegin(GL_LINES);
+//                if(grid(i,j).hedge.used) glColor3f(0,0,0);
+//                glVertex2f(i,j);
+//                glVertex2f(i+1,j);
+//                glColor3f(0,1,0);
+//
+//                if(grid(i,j).dedge.used) glColor3f(0,0,0);
+//                glVertex2f(i,j);
+//                glVertex2f(i+1,j+1);
+//                glColor3f(0,1,0);
+//
+//                if(grid(i,j).vedge.used) glColor3f(0,0,0);
+//                glVertex2f(i,j);
+//                glVertex2f(i,j+1);
+//                glColor3f(0,1,0);
+//                glEnd();
+//
+//                glBegin(GL_POINTS);
+//                if(grid(i,j).inside)
+//                {
+//                    glColor3f(0,0,0);
+//                    glVertex2f(i,j);
+//                }
+//                glColor3f(0,0,1);
+//                if(grid(i,j).vedge.used)
+//                    glVertex2fv(grid(i,j).vedge.pos.get());
+//                if(grid(i,j).hedge.used)
+//                    glVertex2fv(grid(i,j).hedge.pos.get());
+//                if(grid(i,j).dedge.used)
+//                    glVertex2fv(grid(i,j).dedge.pos.get());
+//                glEnd();
+//            }
 
-                glColor3f(0,1,0);
-                glBegin(GL_LINES);
-                if(grid(i,j).hedge.used) glColor3f(0,0,0);
-                glVertex2f(i,j);
-                glVertex2f(i+1,j);
-                glColor3f(0,1,0);
 
-                if(grid(i,j).dedge.used) glColor3f(0,0,0);
-                glVertex2f(i,j);
-                glVertex2f(i+1,j+1);
-                glColor3f(0,1,0);
-
-                if(grid(i,j).vedge.used) glColor3f(0,0,0);
-                glVertex2f(i,j);
-                glVertex2f(i,j+1);
-                glColor3f(0,1,0);
-                glEnd();
-
-                glBegin(GL_POINTS);
-                if(grid(i,j).inside)
-                {
-                    glColor3f(0,0,0);
-                    glVertex2f(i,j);
-                }
-                glColor3f(0,0,1);
-                if(grid(i,j).vedge.used)
-                    glVertex2fv(grid(i,j).vedge.pos.get());
-                if(grid(i,j).hedge.used)
-                    glVertex2fv(grid(i,j).hedge.pos.get());
-                if(grid(i,j).dedge.used)
-                    glVertex2fv(grid(i,j).dedge.pos.get());
-                glEnd();
-            }
-
-        
         
         glFinish();
         glutSwapBuffers();
@@ -547,9 +552,11 @@ namespace
     
     void key(unsigned char c,int x, int y)
     {
+        profile t("snake");
         give_snake_normals();
         VERTEX_DB.evolute_curve();
-        
+        t.done();
+        profile::close();
 //        VERTEX_DB.transform(Vec2f(15,15),
 //                            Mat2x2f(cos(.1),sin(.1),-sin(.1),cos(.1)));
         glutPostRedisplay();
@@ -635,6 +642,20 @@ int main(int argc, char **argv)
                                  p3=VERTEX_DB.add(Vec2f(gap,GRIDY - gap))));
     
     SEGMENT_DB.push_back(Segment(p3,p0));
+    
+    profile t("100");
+    for (int i = 0; i < 200; i++)
+    {
+        give_snake_normals();
+        VERTEX_DB.evolute_curve();
+        
+        GridType grid(GRIDX, GRIDY);
+        process_snake(grid);
+        process_grid(grid);
+    }
+    
+    t.done();
+    profile::close();
     
     glutMainLoop();
     return 0;

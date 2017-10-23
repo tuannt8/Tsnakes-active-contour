@@ -13,6 +13,7 @@
 		A689DF311F98CA56009A7172 /* libpng16.16.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A689DF301F98CA56009A7172 /* libpng16.16.dylib */; };
 		A689DF331F98CA72009A7172 /* libX11.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A689DF321F98CA72009A7172 /* libX11.6.dylib */; };
 		A689DF371F98CD6E009A7172 /* helper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A689DF361F98CD6E009A7172 /* helper.cpp */; };
+		A6AEE5EC1F9A975300494140 /* profile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AEE5EA1F9A975300494140 /* profile.cpp */; };
 		A6EFF10E1F98C058005A0036 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6EFF10D1F98C058005A0036 /* main.cpp */; };
 		A6EFF1181F98C115005A0036 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6EFF1171F98C10D005A0036 /* GLUT.framework */; };
 /* End PBXBuildFile section */
@@ -40,6 +41,8 @@
 		A689DF341F98CC40009A7172 /* helper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = helper.h; sourceTree = "<group>"; };
 		A689DF351F98CC40009A7172 /* define.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = define.h; sourceTree = "<group>"; };
 		A689DF361F98CD6E009A7172 /* helper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = helper.cpp; sourceTree = "<group>"; };
+		A6AEE5EA1F9A975300494140 /* profile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = profile.cpp; sourceTree = "<group>"; };
+		A6AEE5EB1F9A975300494140 /* profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = profile.h; sourceTree = "<group>"; };
 		A6EFF10A1F98C058005A0036 /* TSnake */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TSnake; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6EFF10D1F98C058005A0036 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		A6EFF1151F98C106005A0036 /* GEL.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; path = GEL.framework.dSYM; sourceTree = "<group>"; };
@@ -90,6 +93,8 @@
 				A689DF2D1F98C937009A7172 /* image.cpp */,
 				A689DF2C1F98C937009A7172 /* image.h */,
 				A6EFF10D1F98C058005A0036 /* main.cpp */,
+				A6AEE5EA1F9A975300494140 /* profile.cpp */,
+				A6AEE5EB1F9A975300494140 /* profile.h */,
 			);
 			path = TSnake;
 			sourceTree = "<group>";
@@ -166,6 +171,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A6EFF10E1F98C058005A0036 /* main.cpp in Sources */,
+				A6AEE5EC1F9A975300494140 /* profile.cpp in Sources */,
 				A689DF2E1F98C938009A7172 /* image.cpp in Sources */,
 				A689DF371F98CD6E009A7172 /* helper.cpp in Sources */,
 			);
